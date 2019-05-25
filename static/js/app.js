@@ -1,25 +1,26 @@
-function buildMetadata(sample) {
+function buildMetametadata(sample) {
 
-  // @TODO: Complete the following function that builds the metadata panel
+  // @TODO: Complete the following function that builds the metametadata panelMetametadata
 
-  // Use `d3.json` to fetch the metadata for a sample
-    // Use d3 to select the panel with id of `#sample-metadata`
+  const metadataURL = "/metametadata/" + sample;
+  var panelMetadata = d3.select("#sample-metametadata");
+  panelMetadata.html("");
 
-    // Use `.html("") to clear any existing metadata
-
-    // Use `Object.entries` to add each key and value pair to the panel
-    // Hint: Inside the loop, you will need to use d3 to append new
-    // tags for each key-value in the metadata.
-
+  d3.json(metadataURL).then(function (metadata) {
+    console.log(metadata);
+    Object.defineProperties(metadata).forEach(([key, value]) => {
+      panelMetadata.append("h6").text(`${key}: ${value}`);
+    });
+  });
     // BONUS: Build the Gauge Chart
-    // buildGauge(data.WFREQ);
-}
+    // buildGauge(metadata.WFREQ);
+};
 
 function buildCharts(sample) {
 
-  // @TODO: Use `d3.json` to fetch the sample data for the plots
+  // @TODO: Use `d3.json` to fetch the sample metadata for the plots
 
-    // @TODO: Build a Bubble Chart using the sample data
+    // @TODO: Build a Bubble Chart using the sample metadata
 
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
@@ -28,7 +29,7 @@ function buildCharts(sample) {
 
 function init() {
   // Grab a reference to the dropdown select element
-  var selector = d3.select("#selDataset");
+  var selector = d3.select("#selmetadataset");
 
   // Use the list of sample names to populate the select options
   d3.json("/names").then((sampleNames) => {
@@ -42,14 +43,14 @@ function init() {
     // Use the first sample from the list to build the initial plots
     const firstSample = sampleNames[0];
     buildCharts(firstSample);
-    buildMetadata(firstSample);
+    buildMetametadata(firstSample);
   });
 }
 
 function optionChanged(newSample) {
-  // Fetch new data each time a new sample is selected
+  // Fetch new metadata each time a new sample is selected
   buildCharts(newSample);
-  buildMetadata(newSample);
+  buildMetametadata(newSample);
 }
 
 // Initialize the dashboard
