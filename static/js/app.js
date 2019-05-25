@@ -2,13 +2,13 @@ function buildMetametadata(sample) {
 
   // @TODO: Complete the following function that builds the metametadata panelMetametadata
 
-  const metadataURL = "/metametadata/" + sample;
+  var metadataURL = "/metametadata/" + sample;
   var panelMetadata = d3.select("#sample-metametadata");
   panelMetadata.html("");
 
-  d3.json(metadataURL).then(function (metadata) {
-    console.log(metadata);
-    Object.defineProperties(metadata).forEach(([key, value]) => {
+  d3.json(metadataURL).then(function (data) {
+    console.log(data);
+    Object.defineProperties(data).forEach(([key, value]) => {
       panelMetadata.append("h6").text(`${key}: ${value}`);
     });
   });
@@ -18,13 +18,39 @@ function buildMetametadata(sample) {
 
 function buildCharts(sample) {
 
+  var chartURL = "/samples/" + sample;
+
   // @TODO: Use `d3.json` to fetch the sample metadata for the plots
 
+  d3.json(chartURL).then(function (data) {
+    var trace1 = {
+      x: data.otu_ids,
+      y: data.sample_values,
+      mode: 'markers',
+      text: data.otu_labels,
+      marker: {
+        color: data.otu_ids,
+        size: data.sample_values,
+
+        colorscale: "Earth"
+      }
+    };
+
     // @TODO: Build a Bubble Chart using the sample metadata
+
+    var trace1 = [trace1];
+    var layout = {
+      showlegend: false,
+      height: 600,
+      width: 1500
+    };
+
+    Plotly.newPlot('bubble', trace1, layout);
 
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
+  });
 }
 
 function init() {
