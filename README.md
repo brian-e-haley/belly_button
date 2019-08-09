@@ -2,6 +2,8 @@
 
 [Heroku deployment](https://bh-belly-button.herokuapp.com/)
 
+![Belly Button Biodiversity](images/belly_button.gif)
+
 ## Purpose
 To provide a dashboard to explore samples taken from various belly buttons.
 
